@@ -17,15 +17,28 @@ class phpqatools (
   $default_standard = undef,
 ) {
   include pear
+  include wget
 
   # PEAR Package
   pear::package { 'PEAR': }
 
   # PHPUnit
-  pear::package { 'PHPUnit':
-    version    => 'latest',
-    repository => 'pear.phpunit.de',
-    require    => Pear::Package['PEAR'],
+  #pear::package { 'PHPUnit':
+  #  version    => 'latest',
+  #  repository => 'pear.phpunit.de',
+  #  require    => Pear::Package['PEAR'],
+  #}
+
+  wget::fetch { "get php unit phar":
+    source      => 'https://phar.phpunit.de/phpunit.phar',
+    destination => '/usr/local/bin/phpunit',
+    timeout     => 0,
+    verbose     => true,
+    before      => Exec['php unit permissions']
+  }
+
+  exec { 'php unit permissions':
+       command => 'chmod +x /usr/local/bin/phpunit'
   }
 
   # Pdepend
@@ -55,11 +68,11 @@ class phpqatools (
     require    => Pear::Package['Base'],
   }
 
-  pear::package { 'File_Iterator':
-    version    => 'latest',
-    repository => 'pear.phpunit.de',
-    require    => Pear::Package['PEAR'],
-  }
+  #pear::package { 'File_Iterator':
+  #  version    => 'latest',
+  #  repository => 'pear.phpunit.de',
+  #  require    => Pear::Package['PEAR'],
+  #}
 
   # First install finder dependency
   pear::package { 'Finder':
@@ -68,25 +81,25 @@ class phpqatools (
     require    => Pear::Package['Base'],
   }
 
-  pear::package { 'phpcpd':
-    version    => 'latest',
-    repository => 'pear.phpunit.de',
-    require    => Pear::Package['Finder'],
-  }
+  #pear::package { 'phpcpd':
+  #  version    => 'latest',
+  #  repository => 'pear.phpunit.de',
+  #  require    => Pear::Package['Finder'],
+  #}
 
   # PHPLOC
-  pear::package { 'phploc':
-    version    => 'latest',
-    repository => 'pear.phpunit.de',
-    require    => Pear::Package['Base'],
-  }
+  #pear::package { 'phploc':
+  #  version    => 'latest',
+  #  repository => 'pear.phpunit.de',
+  #  require    => Pear::Package['Base'],
+  #}
 
   # PHPDCD
-  pear::package { 'phpdcd':
-    version    => 'latest',
-    repository => 'pear.phpunit.de',
-    require    => Pear::Package['Base'],
-  }
+  #pear::package { 'phpdcd':
+  #  version    => 'latest',
+  #  repository => 'pear.phpunit.de',
+  #  require    => Pear::Package['Base'],
+  #}
 
   # PHP_CodeSniffer
   pear::package { 'PHP_CodeSniffer':
@@ -96,11 +109,11 @@ class phpqatools (
   }
 
   # Bytekit
-  pear::package { 'bytekit':
-    version    => 'latest',
-    repository => 'pear.phpunit.de',
-    require    => Pear::Package['File_Iterator'],
-  }
+  #pear::package { 'bytekit':
+  #  version    => 'latest',
+  #  repository => 'pear.phpunit.de',
+  #  require    => Pear::Package['File_Iterator'],
+  #}
 
   # Phing
   pear::package { 'phing':
